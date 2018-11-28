@@ -1,0 +1,3 @@
+<component name="DependencyValidationManager">
+  <scope name="CODE" pattern="lib:*..*||src:*..*||test:*..*" />
+</component>

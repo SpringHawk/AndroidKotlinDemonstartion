@@ -1,0 +1,33 @@
+<resources>
+    <string name="app_name">CircularFashion</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <!-- Own Strings -->
+    <string name="NewNFCFound">New piece of clothing was scanned.</string>
+    <string name="BtnBuyPiece">Buy this</string>
+    <string name="title_activity_settings">ActivitySettings</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="message_beaming_complete">Beaming complete</string>
+    <string name="hint_your_message">Your message</string>
+    <string name="label_your_message">Outgoing NFC message:</string>
+    <string name="title_btn_set">Set Message</string>
+
+    <!-- Map Strings -->
+    <string name="access_token">
+        pk.eyJ1Ijoic3ByaW5naGF3ayIsImEiOiJjam8zMHBkdzcwNHExM3ZudGs3aGJqYzJjIn0.5mI2LR6us4oo2ItlsTApRg
+    </string>
+    <string name="draw_marker_options_title">This is a new Marker</string>
+    <string name="draw_marker_options_snippet">Idk what this marker displays?</string>
+
+    <string name="map">Map</string>
+    <string name="list">List</string>
+
+</resources>
