@@ -1,22 +1,26 @@
 package com.circularfashion
 
 import android.Manifest
-import android.app.Activity
+import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
-import android.content.Intent
-import android.net.Uri
-import android.telephony.MbmsDownloadSession.RESULT_CANCELLED
-
-
+import android.support.v7.app.AppCompatActivity
+import android.util.Log
+import android.widget.Toast
+import com.circularfashion.qr_scanner.BarcodeCaptureActivity
+import com.google.android.gms.common.api.CommonStatusCodes
+import com.google.android.gms.vision.barcode.Barcode
 
 
 class ScanProductActivity : AppCompatActivity() {
 
-    private val REQUEST_ACCESS_CAMERA = 214;
+    private val REQUEST_ACCESS_CAMERA = 214
+    private val BARCODE_READER_REQUEST_CODE = 215
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,22 +56,23 @@ class ScanProductActivity : AppCompatActivity() {
                 // result of the request.
             }
         } else {
+            checkCameraHardware(this)
+        }
+    }
+
+    private fun checkCameraHardware(context: Context): Boolean {
+        return if (context.packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA)) {
             startQRScanner()
+            true
+        } else {
+            Toast.makeText(this, "", Toast.LENGTH_SHORT).show()
+            false
         }
     }
 
     private fun startQRScanner() {
-        try {
-            val intent = Intent("com.google.zxing.client.android.SCAN")
-            intent.putExtra("SCAN_MODE", "QR_CODE_MODE") // "PRODUCT_MODE for bar codes
-
-            startActivityForResult(intent, 0)
-        } catch (e: Exception) {
-            val marketUri = Uri.parse("market://details?id=com.google.zxing.client.android")
-            val marketIntent = Intent(Intent.ACTION_VIEW, marketUri)
-            startActivity(marketIntent)
-        }
-
+        val intent = Intent(applicationContext, BarcodeCaptureActivity::class.java)
+        startActivityForResult(intent, BARCODE_READER_REQUEST_CODE)
     }
 
     override fun onRequestPermissionsResult(
@@ -80,7 +85,7 @@ class ScanProductActivity : AppCompatActivity() {
                 if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
                     // permission was granted, yay! Do the
                     // contacts-related task you need to do.
-                    startQRScanner()
+                    checkCameraHardware(this)
                 } else {
                     // permission denied, boo! Disable the
                     // functionality that depends on this permission.
@@ -97,14 +102,17 @@ class ScanProductActivity : AppCompatActivity() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == 0) {
-            if (resultCode == Activity.RESULT_OK) {
-                val contents = data!!.getStringExtra("SCAN_RESULT")
-            }
-            if (resultCode == RESULT_CANCELLED) {
-                //handle cancel
-            }
-        }
+        if (requestCode == BARCODE_READER_REQUEST_CODE) {
+            if (resultCode == CommonStatusCodes.SUCCESS) {
+                if (data != null) {
+                    val barcode = data.getParcelableExtra<Barcode>(BarcodeCaptureActivity.BarcodeObject)
+                    val p = barcode.cornerPoints
+                    Log.e("Value", barcode.displayValue)
+                } else
+                    Log.e("Value", "no barcode captured")
+            } else
+                Log.e("Value", "Wrong format")
+        } else
+            super.onActivityResult(requestCode, resultCode, data)
     }
 }

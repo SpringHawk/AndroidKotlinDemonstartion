@@ -3,6 +3,8 @@
           package="com.circularfashion">
 
     <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-feature android:name="android.hardware.camera" />
+
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
 
     <uses-feature
@@ -46,6 +48,11 @@
         </activity>
         <activity android:name=".ScanProductActivity">
         </activity>
+
+        <!-- Download ML models when App is downloaded from PlayStore -->
+        <meta-data
+                android:name="com.google.firebase.ml.vision.DEPENDENCIES"
+                android:value="barcode" />
     </application>
 
 </manifest>
